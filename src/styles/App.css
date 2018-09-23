@@ -1,0 +1,130 @@
+/*
+ * Common
+ */
+body,
+html,
+#root {
+	height: 100%;
+	background: url(/resources/background.jpg) no-repeat;
+	background-size: cover;
+	font-family: 'Roboto Condensed', sans-serif;
+}
+.app-wrapper {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+}
+.app-wrapper .table-container {
+	margin: auto;
+	width: 840px;
+	min-height: 250px;
+	border-radius: 4px;
+	background: #3e3939;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.4), 0 16px 32px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+/*
+ * Header
+ */
+.app-header {
+	position: absolute;
+	top: 20px;
+}
+.app-header .app-logo {
+	animation: logo-spin 4s infinite;
+}
+
+/*
+ * Table
+ */
+.table-row {
+	height: 200px;
+}
+.table-row .table {
+	margin: 24px 12px;
+	padding: 8px;
+	width: 200px;
+	height: 200px;
+	font-size: 18px;
+	text-align: center;
+	flex-direction: column;
+	text-transform: uppercase;
+	display: inline-flex;
+	border-radius: 4px;
+	border: 2px solid #e6b043;
+	box-sizing: border-box;
+	background-position: 0 0, 0 100%;
+	background-repeat: no-repeat;
+	background-size: 100% 4px;
+	background: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
+				radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
+}
+.table-row .table:nth-child(1) {
+	margin-left: 24px;
+}
+.table-row .table:hover {
+	cursor: pointer;
+	border: 2px solid #efe1ae;
+}
+.table-row .table-name {
+	height: 50%;
+}
+.table-row .table-participants .player-free {
+	height: 18px;
+	width: 20px;
+	background: url(/resources/player-free.png) no-repeat;
+	background-size: cover;
+}
+.table-row .table-participants .player-taken {
+	height: 18px;
+	width: 20px;
+	background: url(/resources/player-taken.png) no-repeat;
+	background-size: cover;
+}
+.table-row .table-participants div {
+	margin: 9px;
+	display: inline-block;
+}
+
+/*
+ * Scrollbar
+ */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	background: rgba(255,0,0,0.8);
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,0,0,0.4);
+}
+
+@keyframes logo-spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	25% {
+		transform: rotate(10deg);
+	}
+	50% {
+		transform: rotate(0deg);
+	}
+	75% {
+		transform: rotate(-10deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
+}
