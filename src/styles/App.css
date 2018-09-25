@@ -50,6 +50,7 @@ html,
 	height: 200px;
 	font-size: 18px;
 	text-align: center;
+	position: relative;
 	flex-direction: column;
 	text-transform: uppercase;
 	display: inline-flex;
@@ -69,6 +70,9 @@ html,
 	cursor: pointer;
 	border: 2px solid #efe1ae;
 }
+.table-row .table:hover > .table-actions {
+	display: block;
+}
 .table-row .table-name {
 	height: 50%;
 }
@@ -87,6 +91,25 @@ html,
 .table-row .table-participants div {
 	margin: 9px;
 	display: inline-block;
+}
+.table-row .table .table-actions {
+	bottom: 8px;
+	width: 180px;
+	display: none;
+	position: absolute;
+}
+.table-row .table .table-actions .button-update,
+.table-row .table .table-actions .button-delete {
+	padding: 4px;
+	width: 41%;
+	display: inline-block;
+	background: #cc543b;
+	font-size: 14px;
+	border-radius: 4px;
+}
+.table-row .table .table-actions .button-update:hover,
+.table-row .table .table-actions .button-delete:hover {
+	background: #dc5b40;
 }
 
 /*

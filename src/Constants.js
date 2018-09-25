@@ -1,5 +1,6 @@
 export const APP = {
 	SOCKET: {
+		HOST: "wss://js-assignment.evolutiongaming.com/ws_api",
 		LOGIN: "user1234",
 		PASSWORD: "password1234",
 		RESPONSE: {
@@ -10,7 +11,8 @@ export const APP = {
 			SUBSCRIBE_TABLES: "subscribe_tables",
 			TABLE_LIST: "table_list",
 			TABLE_ADDED: "table_added",
-			TABLE_REMOVED: "table_removed"
+			TABLE_REMOVED: "table_removed",
+			REMOVE_TABLE: "remove_table"
 		}
 	}
 }

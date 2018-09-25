@@ -19,17 +19,22 @@ import '../../styles/Reset.css'
 class Table extends Component {
 	constructor(props){
 		super(props);
+
 		this.state = {
+			isAdmin: false,
 			tablesData: [],
 			tablesOutput: [],
 			tablesRowWidth: 0,
 			tablesParticipants: []
 		}
+		
+		this.deleteTable = this.deleteTable.bind(this)
+		this.webSocket = new WebSocket(APP.SOCKET.HOST)
 	}
 
 	componentDidMount() {
-		var webSocket = new WebSocket('wss://js-assignment.evolutiongaming.com/ws_api')
-
+		let webSocket = this.webSocket
+		
 		webSocket.onopen = event => {
 			webSocket.send(JSON.stringify({
 				$type: APP.SOCKET.TYPE.LOGIN,
@@ -41,6 +46,10 @@ class Table extends Component {
 				let response = JSON.parse(message.data)
 
 				if (response.$type === APP.SOCKET.RESPONSE.LOGIN_SUCCESS) {
+					this.setState({
+						isAdmin: response.user_type === "admin"
+					})
+
 					webSocket.send(JSON.stringify({
 						$type: APP.SOCKET.TYPE.SUBSCRIBE_TABLES
 					}))
@@ -89,7 +98,8 @@ class Table extends Component {
 		let tablesData = [],
 			tablesOutput = [],
 			tablesRowWidth = 0,
-			tablesParticipants = []
+			tablesParticipants = [],
+			isAdmin = this.state.isAdmin
 
 		tables.map(function(item, index) {
 			tablesRowWidth = 214 * (index + 1)
@@ -107,13 +117,21 @@ class Table extends Component {
 				tablesParticipants.push(<div className={spaceFreeOrTaken} key={i}></div>)
 			}
 
+			//TODO: &nbsp is ugly solution, fix it
 			tablesOutput.push(
 				<div key={item.id} className="table">
 					<div className="table-name">{item.name}</div>
-					<div className="table-participants">{tablesParticipants}</div>
+					<div className="table-participants" >{tablesParticipants}</div>
+					{ isAdmin ?
+						<div className="table-actions">
+							<div className="button-update" onClick={() => alert("TODO: call update table with id - " + item.id)}>Update</div>
+							&nbsp;
+							<div className="button-delete" onClick={() => this.deleteTable(item.id)}>Delete</div>
+						</div>
+					: ""}
 				</div>
 			)
-		})
+		}, this)
 
 		this.setState({
 			tablesData: tablesData,
@@ -121,6 +139,41 @@ class Table extends Component {
 			tablesRowWidth: tablesRowWidth,
 			tablesParticipants: tablesParticipants
 		})
+	}
+
+	deleteTable(id) {
+		let webSocket = this.webSocket,
+			tablesData = this.state.tablesData
+
+		tablesData.forEach(function(item, index) {
+			if (item.id === id) {
+				cl("TRIGGER ADMIN REMOVE: id " + id)
+				cl("MANUALY DELETED TABLE: " + tablesData[index].name + " (id: " + tablesData[index].id + ")")
+				delete(tablesData[index])
+			}
+		})
+
+		this.renderTables(tablesData)
+
+		webSocket.onmessage = message => {
+			let response = JSON.parse(message.data)
+				cl(response)
+
+			//TODO: strange behaivour from websocket here, sometime fires back wrong ID
+			if (response.$type !== "removal_failed") {
+				webSocket.send(JSON.stringify({
+					$type: APP.SOCKET.TYPE.REMOVE_TABLE,
+					id: id
+				}))
+			}
+			else {
+				//TODO: sometime server returns that $type:table_removed and after sometime sends $type:removal_failed
+				cl("removal_failed")
+				cl(tablesData.length)
+				//TODO: add logic to rollback changes
+				//this.renderTables(tablesDataOrginal)
+			}
+		}
 	}
 
 	render() {
